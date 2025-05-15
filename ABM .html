@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ABM Simple</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { margin: 5px; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+  </style>
+</head>
+<body>
+
+  <h2>ABM de Personas</h2>
+
+  <label>Nombre: <input type="text" id="nombre"></label>
+  <label>Edad: <input type="number" id="edad"></label>
+  <button onclick="agregar()">Agregar</button>
+
+  <table id="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Filas dinámicas -->
+    </tbody>
+  </table>
+
+  <script>
+    let personas = [];
+
+    function renderizar() {
+      const cuerpo = document.querySelector("#tabla tbody");
+      cuerpo.innerHTML = "";
+      personas.forEach((persona, index) => {
+        cuerpo.innerHTML += `
+          <tr>
+            <td>${persona.nombre}</td>
+            <td>${persona.edad}</td>
+            <td>
+              <button onclick="editar(${index})">Editar</button>
+              <button onclick="borrar(${index})">Borrar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function agregar() {
+      const nombre = document.getElementById("nombre").value;
+      const edad = document.getElementById("edad").value;
+      if (nombre && edad) {
+        personas.push({ nombre, edad });
+        renderizar();
+        document.getElementById("nombre").value = "";
+        document.getElementById("edad").value = "";
+      }
+    }
+
+    function borrar(index) {
+      personas.splice(index, 1);
+      renderizar();
+    }
+
+    function editar(index) {
+      const nuevaEdad = prompt("Nueva edad para " + personas[index].nombre, personas[index].edad);
+      if (nuevaEdad !== null) {
+        personas[index].edad = nuevaEdad;
+        renderizar();
+      }
+    }
+  </script>
+
+</body>
+</html>
+
